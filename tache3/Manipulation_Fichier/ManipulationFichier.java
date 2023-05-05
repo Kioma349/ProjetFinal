@@ -3,10 +3,12 @@ import java.io.File;
 import java.io.FilenameFilter;
 
 public class ManipulationFichier {
+    // Interface pour définir une action à effectuer sur un fichier
     interface FileAction {
         void perform(File file);
     }
 
+    // Méthode pour afficher les noms de fichiers d'un répertoire ayant un préfixe spécifique
     public static void printFiles(File repertoire, String prefix) {
         applyActionOnFiles(repertoire, prefix, new FileAction() {
             @Override
@@ -16,7 +18,9 @@ public class ManipulationFichier {
         });
     }
 
+    // Méthode pour calculer la taille totale des fichiers d'un répertoire
     public static long totalSizeOfFiles(File repertoire) {
+        // Classe interne pour calculer la taille totale des fichiers
         class TailleCalculateur implements FileAction {
             long tailleTotale = 0;
 
@@ -33,7 +37,9 @@ public class ManipulationFichier {
         return calculateur.tailleTotale;
     }
 
+    // Méthode pour trouver le fichier le plus récent d'un répertoire
     public static File mostRecentFile(File repertoire) {
+        // Classe interne pour trouver le fichier le plus récent
         class PlusRecentFichierFinder implements FileAction {
             File fichierLePlusRecent = null;
             long derniereModif = Long.MIN_VALUE;
@@ -52,6 +58,7 @@ public class ManipulationFichier {
         return finder.fichierLePlusRecent;
     }
 
+    // Méthode privée pour appliquer une action sur les fichiers d'un répertoire avec un préfixe spécifique
     private static void applyActionOnFiles(File repertoire, String prefix, FileAction action) {
         FilenameFilter startsWithFilter = null;
         if (prefix != null) {
@@ -63,6 +70,7 @@ public class ManipulationFichier {
             };
         }
 
+        // Liste les fichiers avec le filtre si un préfixe est spécifié, sinon liste tous les fichiers
         File[] fichiers = (startsWithFilter != null) ? repertoire.listFiles(startsWithFilter) : repertoire.listFiles();
         if (fichiers != null) {
             for (File fichier : fichiers) {
